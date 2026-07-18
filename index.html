@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coco Villa Unawatuna – Luxury Boutique Villa in Sri Lanka</title>
+    <meta name="description"
+        content="Coco Villa Unawatuna is a private eco-friendly boutique villa nestled in a quiet coconut grove, steps from Unawatuna Beach, Sri Lanka. Book your tropical escape." />
+    <meta name="keywords"
+        content="Coco Villa, Unawatuna, Sri Lanka, boutique villa, luxury accommodation, beach villa" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Jost:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+    <!-- ===================== NAVBAR ===================== -->
+    <nav id="navbar" class="navbar" role="navigation" aria-label="Main navigation">
+        <div class="nav-inner">
+            <a href="#" class="nav-logo" aria-label="Coco Villa Home">
+                <img src="assets/logo.png" alt="Coco Villa Logo" class="logo-img" />
+            </a>
+
+            <!-- Desktop Nav Links -->
+            <div class="nav-links" id="navLinks">
+                <a href="#" class="nav-link">Home</a>
+                <a href="#gallery" class="nav-link">Experience</a>
+                <a href="#stay" class="nav-link">Stay</a>
+                <a href="#location" class="nav-link">Location</a>
+                <a href="#book-cta" class="nav-cta" id="navBookBtn">Book Now</a>
+            </div>
+
+            <!-- Hamburger -->
+            <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false"
+                aria-controls="mobileMenu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+            <a href="#" class="mobile-link" onclick="closeMobileMenu()">Home</a>
+            <a href="#gallery" class="mobile-link" onclick="closeMobileMenu()">Experience</a>
+            <a href="#stay" class="mobile-link" onclick="closeMobileMenu()">Stay</a>
+            <a href="#location" class="mobile-link" onclick="closeMobileMenu()">Location</a>
+            <a href="#book-cta" class="mobile-link mobile-cta" onclick="openBookingModal(); closeMobileMenu()">Book
+                Now</a>
+        </div>
+    </nav>
+
+    <!-- ===================== HERO ===================== -->
+    <section class="hero" role="banner">
+        <div class="hero-bg">
+            <img src="assets/landing/web/hero.webp"
+                alt="Aerial view of Coco Villa tropical boutique villa surrounded by coconut palms in Unawatuna, Sri Lanka"
+                class="hero-img" loading="eager" fetchpriority="high" />
+            <div class="hero-overlay"></div>
+        </div>
+        <div class="hero-content">
+            <span class="hero-eyebrow">Welcome to Paradise</span>
+            <h1 class="hero-title">COCO VILLA</h1>
+            <p class="hero-subtitle">Experience the perfect blend of luxury and nature in Unawatuna</p>
+            <button class="btn-hero" id="heroBookBtn" onclick="openBookingModal()" aria-haspopup="dialog">
+                Book Your Stay
+            </button>
+        </div>
+        <!-- Scroll indicator -->
+        <div class="scroll-indicator" aria-hidden="true">
+            <span></span>
+        </div>
+    </section>
+
+    <!-- ===================== MAIN CONTENT ===================== -->
+    <main class="main-content">
+
+        <!-- INTRO / EXPERIENCE SECTION -->
+        <section class="intro-section" aria-labelledby="intro-heading">
+            <div class="intro-grid">
+                <div class="intro-text">
+                    <span class="eyebrow">The Experience</span>
+                    <h2 class="section-title" id="intro-heading">A Sanctuary for the Soul</h2>
+                    <p class="intro-description">
+                        Nestled in a quiet coconut grove, simply a short stroll from the pristine Unawatuna beach, Coco
+                        Villa offers a private escape. Our eco-friendly design harmonizes with nature, providing a
+                        serene backdrop for your tropical getaway.
+                    </p>
+                    <div class="intro-stats">
+                        <div class="stat-card">
+                            <span class="stat-number">5</span>
+                            <span class="stat-label">Mins onto Beach</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number">100%</span>
+                            <span class="stat-label">Private</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number">4.9★</span>
+                            <span class="stat-label">Guest Rating</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Images injected dynamically from assets/experience/1.jpg, 2.jpg … -->
+                <div class="intro-images" id="introImages" aria-hidden="true">
+                    <!-- populated by app.js initIntroImages() -->
+                </div>
+            </div>
+        </section>
+
+        <!-- GARDEN GALLERY SECTION -->
+        <section class="gallery-section" id="gallery" aria-labelledby="gallery-heading">
+            <div class="container">
+                <div class="section-header">
+                    <span class="eyebrow">Immersed in Nature</span>
+                    <h2 class="section-title" id="gallery-heading">Garden Layouts</h2>
+                </div>
+
+                <div class="gallery-wrapper">
+                    <button class="gallery-arrow gallery-arrow--left" id="galleryLeft" aria-label="Scroll gallery left"
+                        onclick="scrollGallery('left')">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <polyline points="15 18 9 12 15 6"></polyline>
+                        </svg>
+                    </button>
+
+                    <!-- Cards injected dynamically from assets/garden_layouts/web/1.jpg, 2.jpg … -->
+                    <div class="gallery-track" id="galleryTrack" role="list" aria-label="Garden photo gallery">
+                        <!-- populated by app.js initGallery() -->
+                    </div>
+
+                    <button class="gallery-arrow gallery-arrow--right" id="galleryRight"
+                        aria-label="Scroll gallery right" onclick="scrollGallery('right')">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ROOM & BOOKING CTA SECTION -->
+        <section class="stay-section" id="stay" aria-labelledby="stay-heading">
+            <div class="container">
+                <div class="stay-grid">
+
+                    <!-- Room Preview -->
+                    <div class="room-panel">
+                        <span class="eyebrow">Your Stay</span>
+                        <h2 class="section-title" id="stay-heading">Deluxe Garden Villa</h2>
+
+                        <!-- Room Image Carousel -->
+                        <!-- Slides are injected dynamically from assets/rooms/web/1.jpg, 2.jpg, 3.jpg … -->
+                        <div class="room-carousel" aria-label="Room photo carousel">
+                            <div class="room-slides" id="roomSlides">
+                                <!-- populated by app.js initRoomCarousel() -->
+                            </div>
+                            <button class="carousel-arrow carousel-arrow--left" onclick="changeSlide(-1)"
+                                aria-label="Previous room photo">❮</button>
+                            <button class="carousel-arrow carousel-arrow--right" onclick="changeSlide(1)"
+                                aria-label="Next room photo">❯</button>
+                            <div class="carousel-dots" id="carouselDots" role="tablist" aria-label="Select room photo">
+                            </div>
+                        </div>
+
+                        <p class="room-description">
+                            Experience ultimate relaxation in our tastefully designed villa. Surrounded by lush
+                            greenery, each room is a haven of peace featuring modern amenities and traditional charm.
+                        </p>
+
+                        <!-- Amenities -->
+                        <div class="amenities-grid" role="list" aria-label="Villa amenities">
+                            <div class="amenity" role="listitem">
+                                <div class="amenity-icon" aria-hidden="true">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M5 12.55a11 11 0 0 1 14.08 0"></path>
+                                        <path d="M1.42 9a16 16 0 0 1 21.16 0"></path>
+                                        <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
+                                        <line x1="12" y1="20" x2="12.01" y2="20"></line>
+                                    </svg>
+                                </div>
+                                <span>Free WiFi</span>
+                            </div>
+                            <div class="amenity" role="listitem">
+                                <div class="amenity-icon" aria-hidden="true">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path
+                                            d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-4.04">
+                                        </path>
+                                        <path
+                                            d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-4.04">
+                                        </path>
+                                    </svg>
+                                </div>
+                                <span>Air Conditioning</span>
+                            </div>
+                            <div class="amenity" role="listitem">
+                                <div class="amenity-icon" aria-hidden="true">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect>
+                                        <polyline points="17 2 12 7 7 2"></polyline>
+                                    </svg>
+                                </div>
+                                <span>Smart TV</span>
+                            </div>
+                            <div class="amenity" role="listitem">
+                                <div class="amenity-icon" aria-hidden="true">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M2 20h20"></path>
+                                        <path d="M5 20V8a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v12"></path>
+                                        <path d="M13 20V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v16"></path>
+                                    </svg>
+                                </div>
+                                <span>King Bed</span>
+                            </div>
+                            <div class="amenity" role="listitem">
+                                <div class="amenity-icon" aria-hidden="true">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path
+                                            d="M2 12h20M2 12a10 10 0 0 1 20 0M2 12a10 10 0 0 0 20 0M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z">
+                                        </path>
+                                    </svg>
+                                </div>
+                                <span>Private Patio</span>
+                            </div>
+                            <div class="amenity" role="listitem">
+                                <div class="amenity-icon" aria-hidden="true">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M3 17l9-13 9 13H3z"></path>
+                                        <path d="M3 17c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2"></path>
+                                        <path d="M12 4v10"></path>
+                                    </svg>
+                                </div>
+                                <span>Garden View</span>
+                            </div>
+                        </div>
+
+                        <div class="room-price">
+                            <span class="price-amount">From $45</span>
+                            <span class="price-unit">/ night</span>
+                        </div>
+                    </div>
+
+                    <!-- CTA Booking Panel -->
+                    <div class="booking-panel" id="book-cta">
+                        <div class="booking-panel-inner">
+                            <span class="booking-eyebrow">Reserve Your Escape</span>
+                            <h3 class="booking-title">Book Your Stay</h3>
+                            <p class="booking-description">
+                                Choose your preferred booking platform or contact us directly via WhatsApp for
+                                personalized assistance.
+                            </p>
+
+                            <!-- Primary CTA -->
+                            <button class="btn-book-primary" id="openBookingBtn" onclick="openBookingModal()"
+                                aria-haspopup="dialog" aria-controls="bookingModal">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                </svg>
+                                Check Availability
+                            </button>
+
+                            <!-- Features list -->
+                            <ul class="booking-features" aria-label="Booking highlights">
+                                <li>
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+                                        aria-hidden="true">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                    No payment required upfront
+                                </li>
+                                <li>
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+                                        aria-hidden="true">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                    Confirmation within 24 hours
+                                </li>
+                                <li>
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+                                        aria-hidden="true">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                    Flexible cancellation options
+                                </li>
+                                <li>
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+                                        aria-hidden="true">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                    Best rate guaranteed direct
+                                </li>
+                            </ul>
+
+                            <!-- Platform quick links -->
+                            <div class="platform-strip">
+                                <p class="platform-strip-label">Also available on</p>
+                                <div class="platform-links" role="list">
+                                    <a href="https://www.booking.com" target="_blank" rel="noopener noreferrer"
+                                        class="platform-badge" role="listitem" aria-label="Book on Booking.com">
+                                        <span class="platform-icon booking-icon" aria-hidden="true">B.</span>
+                                        <span>Booking.com</span>
+                                    </a>
+                                    <a href="https://www.airbnb.com" target="_blank" rel="noopener noreferrer"
+                                        class="platform-badge" role="listitem" aria-label="Book on Airbnb">
+                                        <svg class="platform-icon airbnb-icon" viewBox="0 0 24 24" aria-hidden="true"
+                                            fill="currentColor">
+                                            <path
+                                                d="M12.001 1.5c-.896 0-2.13.608-3.133 1.875-1.078 1.367-1.745 3.237-1.745 5.457 0 1.52.389 3.215 1.029 4.583.598 1.283 1.378 2.245 2.147 2.695.25.147.472.218.702.218.23 0 .452-.071.703-.218.77-.45 1.549-1.413 2.147-2.695.64-1.368 1.029-3.063 1.029-4.583 0-2.22-.667-4.09-1.745-5.457C14.131 2.108 12.897 1.5 12.001 1.5zm0 1.5c.573 0 1.448.42 2.13 1.297.79 1.004 1.248 2.517 1.248 4.535 0 1.317-.338 2.873-.917 4.106-.518 1.11-1.14 1.896-1.665 2.204a.413.413 0 0 1-.398 0c-.524-.308-1.147-1.094-1.664-2.204-.58-1.233-.918-2.789-.918-4.106 0-2.018.457-3.531 1.248-4.535.681-.877 1.556-1.297 1.936-1.297zM3.984 8.52C2.97 8.52 2 9.38 2 10.797c0 .835.42 1.818 1.15 2.78.637.84 1.491 1.62 2.433 2.15.267.152.522.236.775.236s.508-.084.775-.236c.942-.53 1.797-1.31 2.433-2.15.73-.962 1.15-1.945 1.15-2.78 0-1.416-.97-2.277-1.984-2.277-.595 0-1.155.269-1.574.697-.42-.428-.98-.697-1.574-.697zm16.032 0c-.594 0-1.154.269-1.573.697-.42-.428-.98-.697-1.574-.697-1.014 0-1.984.861-1.984 2.277 0 .835.42 1.818 1.15 2.78.637.84 1.49 1.62 2.433 2.15.267.152.521.236.775.236s.508-.084.775-.236c.942-.53 1.796-1.31 2.433-2.15.73-.962 1.149-1.945 1.149-2.78 0-1.416-.97-2.277-1.984-2.277zM3.984 10.02c.243 0 .506.138.74.413.234-.275.497-.413.74-.413.558 0 .984.45.984 1.277 0 .62-.337 1.35-.898 2.074-.525.692-1.219 1.327-2.008 1.774 0 0-.024.01-.024.01s-.024-.01-.024-.01c-.789-.447-1.483-1.082-2.008-1.774-.562-.724-.899-1.455-.899-2.074 0-.827.426-1.277.984-1.277.243 0 .506.138.74.413.234-.275.497-.413.74-.413zm16.032 0c.242 0 .506.138.739.413.234-.275.497-.413.74-.413.558 0 .984.45.984 1.277 0 .62-.337 1.35-.899 2.074-.525.692-1.219 1.327-2.008 1.774 0 0-.023.01-.023.01s-.024-.01-.024-.01c-.789-.447-1.483-1.082-2.008-1.774-.562-.724-.899-1.455-.899-2.074 0-.827.426-1.277.984-1.277.243 0 .506.138.74.413.233-.275.497-.413.739-.413zM12 16.83c-.35 0-.693.075-1.02.213-.327-.138-.67-.213-1.02-.213-1.137 0-2.204.683-2.837 1.866-.568 1.073-.726 2.49-.283 3.592.393.98 1.218 1.71 2.423 1.71.562 0 1.097-.154 1.517-.414.148-.092.243-.118.22-.118.22 0 .072.026.22.118.42.26.955.414 1.517.414 1.205 0 2.03-.73 2.423-1.71.443-1.102.285-2.519-.283-3.592C14.204 17.513 13.137 16.83 12 16.83zm0 1.5c.757 0 1.534.487 1.997 1.35.408.77.496 1.79.2 2.518C13.974 22.73 13.498 23 13 23c-.34 0-.685-.107-.92-.256-.33-.204-.57-.29-.58-.29-.01 0-.25.086-.58.29-.235.149-.58.256-.92.256-.498 0-.974-.27-1.197-.802-.296-.728-.208-1.748.2-2.518.463-.863 1.24-1.35 1.997-1.35z" />
+                                        </svg>
+                                        <span>Airbnb</span>
+                                    </a>
+                                    <a href="https://wa.me/94XXXXXXXXX" target="_blank" rel="noopener noreferrer"
+                                        class="platform-badge" role="listitem" aria-label="Contact us on WhatsApp">
+                                        <svg class="platform-icon whatsapp-icon" viewBox="0 0 24 24" aria-hidden="true"
+                                            fill="currentColor">
+                                            <path
+                                                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z" />
+                                        </svg>
+                                        <span>WhatsApp</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- LOCATION SECTION -->
+        <section class="location-section" id="location" aria-labelledby="location-heading">
+            <div class="container">
+                <div class="section-header centered">
+                    <span class="eyebrow">Explore Unawatuna</span>
+                    <h2 class="section-title" id="location-heading">The Perfect Location</h2>
+                </div>
+
+                <div class="location-grid">
+                    <!-- Map -->
+                    <div class="map-container">
+                        <iframe id="mapFrame" title="Coco Villa Location in Unawatuna, Sri Lanka" width="100%"
+                            height="100%" frameborder="0" loading="lazy" allowfullscreen
+                            src="https://maps.google.com/maps?q=6.022760,80.246185&ll=6.028397,80.237084&z=14&output=embed"></iframe>
+                    </div>
+
+                    <!-- Location Details -->
+                    <div class="location-details">
+                        <div class="location-icon-row">
+                            <div class="location-pin-icon" aria-hidden="true">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                    <circle cx="12" cy="10" r="3"></circle>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="location-title">Unawatuna, Sri Lanka</h3>
+                                <p class="location-desc">Located in a peaceful coconut grove, nicely tucked away from
+                                    the busy roads but just minutes from the action.</p>
+                                <button class="btn-text" onclick="showAttractions()"
+                                    aria-label="Show tourist attractions near Coco Villa on map">Show All Attractions on
+                                    Map</button>
+                            </div>
+                        </div>
+
+                        <div class="distances-grid">
+                            <div class="distance-card" onmouseenter="updateMap('Unawatuna Beach')"
+                                onmouseleave="resetMap()">
+                                <div class="distance-icon" aria-hidden="true">
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                </div>
+                                <span class="distance-num">1 KM</span>
+                                <span class="distance-label">Unawatuna Beach</span>
+                            </div>
+                            <div class="distance-card" onmouseenter="updateMap('Jungle Beach Unawatuna')"
+                                onmouseleave="resetMap()">
+                                <div class="distance-icon" aria-hidden="true">
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="9" cy="7" r="4"></circle>
+                                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                    </svg>
+                                </div>
+                                <span class="distance-num">1.5 KM</span>
+                                <span class="distance-label">Jungle Beach</span>
+                            </div>
+                        </div>
+
+                        <div class="nearby-section">
+                            <h4 class="nearby-title">Nearby Highlights</h4>
+                            <div class="nearby-tags" role="list" aria-label="Nearby tourist attractions">
+                                <button class="nearby-tag" role="listitem" onmouseenter="updateMap('Galle Dutch Fort')"
+                                    onmouseleave="resetMap()" onclick="updateMap('Galle Dutch Fort')">Galle
+                                    Fort</button>
+                                <button class="nearby-tag" role="listitem"
+                                    onmouseenter="updateMap('Japanese Peace Pagoda Unawatuna')"
+                                    onmouseleave="resetMap()"
+                                    onclick="updateMap('Japanese Peace Pagoda Unawatuna')">Peace Pagoda</button>
+                                <button class="nearby-tag" role="listitem"
+                                    onmouseenter="updateMap('Sea Turtle Hatchery Habaraduwa')" onmouseleave="resetMap()"
+                                    onclick="updateMap('Sea Turtle Hatchery Habaraduwa')">Turtle Hatchery</button>
+                                <button class="nearby-tag" role="listitem"
+                                    onmouseenter="updateMap('Dalawella Beach Swing')" onmouseleave="resetMap()"
+                                    onclick="updateMap('Dalawella Beach Swing')">Dalawella Swing</button>
+                                <button class="nearby-tag" role="listitem"
+                                    onmouseenter="updateMap('Yatagala Raja Maha Viharaya')" onmouseleave="resetMap()"
+                                    onclick="updateMap('Yatagala Raja Maha Viharaya')">Yatagala Temple</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ===================== FOOTER ===================== -->
+    <footer class="footer" role="contentinfo">
+        <div class="container">
+            <div class="footer-inner">
+                <div class="footer-brand">
+                    <img src="assets/logo.png" alt="Coco Villa Logo" class="footer-logo" />
+                    <p class="footer-tagline">A private tropical escape in Unawatuna, Sri Lanka.</p>
+                </div>
+
+                <div class="footer-links">
+                    <div class="footer-col">
+                        <h4 class="footer-col-heading">Navigate</h4>
+                        <a href="#">Home</a>
+                        <a href="#gallery">Experience</a>
+                        <a href="#stay">Stay</a>
+                        <a href="#location">Location</a>
+                    </div>
+                    <div class="footer-col">
+                        <h4 class="footer-col-heading">Book</h4>
+                        <a href="https://www.booking.com" target="_blank" rel="noopener noreferrer">Booking.com</a>
+                        <a href="https://www.airbnb.com" target="_blank" rel="noopener noreferrer">Airbnb</a>
+                        <a href="https://wa.me/94XXXXXXXXX" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+                    </div>
+                    <div class="footer-col">
+                        <h4 class="footer-col-heading">Social</h4>
+                        <a href="#" aria-label="Visit Coco Villa on Instagram">Instagram</a>
+                        <a href="#" aria-label="Visit Coco Villa on Facebook">Facebook</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <span id="year"></span> Coco Villa Unawatuna. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===================== BOOKING MODAL ===================== -->
+    <div id="bookingModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle"
+        aria-hidden="true">
+        <div class="modal-backdrop" onclick="closeBookingModal()"></div>
+        <div class="modal-card">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <div>
+                    <h2 class="modal-title" id="modalTitle">Book Your Stay</h2>
+                    <p class="modal-subtitle">Choose your preferred booking platform</p>
+                </div>
+                <button class="modal-close" onclick="closeBookingModal()" aria-label="Close booking modal">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Booking Options -->
+            <div class="modal-options" role="list" aria-label="Booking platform options">
+
+                <!-- Booking.com -->
+                <a href="https://www.booking.com" target="_blank" rel="noopener noreferrer" class="booking-option"
+                    role="listitem">
+                    <div class="booking-option-icon booking-dot-com" aria-hidden="true">
+                        <svg viewBox="0 0 120 60" width="80" height="40" aria-hidden="true">
+                            <rect width="120" height="60" rx="8" fill="#003580" />
+                            <text x="60" y="40" font-size="28" font-family="Arial, sans-serif" font-weight="900"
+                                fill="white" text-anchor="middle">booking</text>
+                        </svg>
+                    </div>
+                    <div class="booking-option-text">
+                        <span class="booking-option-title">Book on Booking.com</span>
+                        <span class="booking-option-sub">Instant confirmation · Secure payment</span>
+                    </div>
+                    <div class="booking-option-arrow" aria-hidden="true">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </div>
+                </a>
+
+                <!-- Airbnb -->
+                <a href="https://www.airbnb.com" target="_blank" rel="noopener noreferrer" class="booking-option"
+                    role="listitem">
+                    <div class="booking-option-icon airbnb-modal-icon" aria-hidden="true">
+                        <svg viewBox="0 0 122.88 122.88" width="44" height="44" aria-hidden="true" fill="#FF5A5F">
+                            <path
+                                d="M61.44,0A61.46,61.46,0,1,1,18,18,61.25,61.25,0,0,1,61.44,0ZM74,79.39c.07-.16.15-.33.22-.49A25.58,25.58,0,0,0,76,69.23c0-4.72-1.62-8.28-4.35-10.2a8.24,8.24,0,0,0-4.87-1.49,9.6,9.6,0,0,0-5.31,1.6,25.84,25.84,0,0,0-4.14,3.89,25.84,25.84,0,0,0-4.14-3.89A9.6,9.6,0,0,0,48,57.54a8.24,8.24,0,0,0-4.87,1.49c-2.73,1.92-4.35,5.48-4.35,10.2a25.58,25.58,0,0,0,1.74,9.67c.07.16.15.33.22.49C43.05,84.05,55.1,92.1,57.48,93.51a7.21,7.21,0,0,0,3.95,1.23,7.21,7.21,0,0,0,3.95-1.23C67.78,92.1,79.83,84.05,74,79.39ZM61.44,65a22.67,22.67,0,0,1,3.77-3.53,6.26,6.26,0,0,1,3.49-1.07,4.91,4.91,0,0,1,2.9.89c1.63,1.15,2.67,3.6,2.67,7.06A22.29,22.29,0,0,1,72.75,77a50.93,50.93,0,0,1-5.35,7.77,64.37,64.37,0,0,1-6,6.17,3.89,3.89,0,0,1-4,0,64.37,64.37,0,0,1-6-6.17A50.93,50.93,0,0,1,46.13,77a22.29,22.29,0,0,1-1.52-8.71c0-3.46,1-5.91,2.67-7.06a4.91,4.91,0,0,1,2.9-.89A6.26,6.26,0,0,1,53.67,61.5,22.67,22.67,0,0,1,57.44,65a25.84,25.84,0,0,1,4,0ZM61.44,38.67a11.33,11.33,0,1,1-11.33,11.33A11.34,11.34,0,0,1,61.44,38.67Zm0,4a7.3,7.3,0,1,1-7.3,7.3A7.31,7.31,0,0,1,61.44,42.7Z" />
+                        </svg>
+                    </div>
+                    <div class="booking-option-text">
+                        <span class="booking-option-title">Book on Airbnb</span>
+                        <span class="booking-option-sub">Flexible cancellation · Superhost</span>
+                    </div>
+                    <div class="booking-option-arrow" aria-hidden="true">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </div>
+                </a>
+
+                <!-- WhatsApp -->
+                <a href="https://wa.me/94XXXXXXXXX?text=Hello!%20I%27d%20like%20to%20book%20a%20stay%20at%20Coco%20Villa%20Unawatuna."
+                    target="_blank" rel="noopener noreferrer" class="booking-option booking-option--whatsapp"
+                    role="listitem">
+                    <div class="booking-option-icon whatsapp-modal-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" width="44" height="44" aria-hidden="true" fill="#25D366">
+                            <path
+                                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z" />
+                        </svg>
+                    </div>
+                    <div class="booking-option-text">
+                        <span class="booking-option-title">Chat on WhatsApp</span>
+                        <span class="booking-option-sub">Instant reply · Personal assistance</span>
+                    </div>
+                    <div class="booking-option-arrow" aria-hidden="true">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </div>
+                </a>
+
+            </div>
+
+            <!-- Modal Footer note -->
+            <p class="modal-note">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+                Best rates are guaranteed when booking directly via WhatsApp.
+            </p>
+        </div>
+    </div>
+
+    <!-- Script -->
+    <script src="app.js"></script>
+</body>
+
+</html>
