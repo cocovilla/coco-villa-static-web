@@ -273,6 +273,29 @@ function buildCarousel(images) {
 function initRoomCarousel() {
     const images = getImages('rooms', i => `Coco Villa room photo ${i}`);
     buildCarousel(images);
+
+    // Touch swipe support (same as gallery drag, but for the opacity-based carousel)
+    const carousel = document.querySelector('.room-carousel');
+    if (!carousel) return;
+
+    let touchStartX = 0;
+
+    carousel.addEventListener('touchstart', e => {
+        touchStartX = e.touches[0].clientX;
+        // Pause auto-advance while user is interacting
+        clearInterval(carouselTimer);
+    }, { passive: true });
+
+    carousel.addEventListener('touchend', e => {
+        const delta = touchStartX - e.changedTouches[0].clientX;
+        if (Math.abs(delta) > 40) {          // 40px threshold feels natural
+            changeSlide(delta > 0 ? 1 : -1); // swipe left → next, right → prev
+        }
+        // Resume auto-advance after swipe
+        if (totalSlides > 1) {
+            carouselTimer = setInterval(() => changeSlide(1), 5000);
+        }
+    }, { passive: true });
 }
 
 function changeSlide(direction) {
