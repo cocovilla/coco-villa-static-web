@@ -86,8 +86,9 @@ function closeMobileMenu() {
 
 /* ==================== IMAGE PROBING UTILITY ==================== */
 /**
- * Probes numbered .webp files (1.webp, 2.webp, …) ALL IN PARALLEL using
- * Promise.all so there is no sequential waterfall. Results are sorted by index.
+ * Probes numbered .webp files (1.webp, 2.webp, …) sequentially and stops at
+ * the first 404. This avoids flooding the console with hundreds of expected
+ * 404s that a fully-parallel approach would produce.
  *
  * @param {string}   base     Folder path, e.g. 'assets/rooms/web/'
  * @param {number}   max      Safety cap (default 50)
@@ -95,22 +96,25 @@ function closeMobileMenu() {
  * @returns {Promise<Array<{src: string, alt: string}>>}
  */
 function probeImages(base, max = 50, makeAlt = (i) => `Photo ${i}`) {
-    const probes = Array.from({ length: max }, (_, i) => i + 1).map(index => {
-        const src = `${base}${index}.webp`;
-        return new Promise(resolve => {
-            const img = new Image();
-            img.onload = () => resolve({ index, src, alt: makeAlt(index) });
-            img.onerror = () => resolve(null);   // miss → null
-            img.src = src;
-        });
-    });
+    return new Promise(resolve => {
+        const found = [];
+        let index = 1;
 
-    return Promise.all(probes).then(results =>
-        results
-            .filter(Boolean)                       // drop misses
-            .sort((a, b) => a.index - b.index)     // restore order
-            .map(({ src, alt }) => ({ src, alt })) // strip internal index
-    );
+        function tryNext() {
+            if (index > max) { resolve(found); return; }
+
+            const img = new Image();
+            img.onload = () => {
+                found.push({ src: `${base}${index}.webp`, alt: makeAlt(index) });
+                index++;
+                tryNext();
+            };
+            img.onerror = () => resolve(found); // first miss → stop
+            img.src = `${base}${index}.webp`;
+        }
+
+        tryNext();
+    });
 }
 
 /* ==================== INTRO IMAGES ==================== */
