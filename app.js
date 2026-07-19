@@ -84,80 +84,50 @@ function closeMobileMenu() {
     mobileMenu.setAttribute('aria-hidden', 'true');
 }
 
-/* ==================== IMAGE PROBING UTILITY ==================== */
+/* ==================== IMAGE MANIFEST ==================== */
 /**
- * Probes numbered .webp files (1.webp, 2.webp, …) sequentially and stops at
- * the first 404. This avoids flooding the console with hundreds of expected
- * 404s that a fully-parallel approach would produce.
- *
- * @param {string}   base     Folder path, e.g. 'assets/rooms/web/'
- * @param {number}   max      Safety cap (default 50)
- * @param {Function} makeAlt  Function(index) → alt text string
- * @returns {Promise<Array<{src: string, alt: string}>>}
+ * Static manifest of image counts per folder.
+ * Update these numbers when you add or remove images.
+ * Using a manifest avoids ALL network probe requests and 404 errors.
  */
-function probeImages(base, max = 50, makeAlt = (i) => `Photo ${i}`) {
-    return new Promise(resolve => {
-        const found = [];
-        let index = 1;
+const IMAGE_MANIFEST = {
+    experience: { base: 'assets/experience/', count: 2 },
+    garden: { base: 'assets/garden_layouts/web/', count: 5 },
+    rooms: { base: 'assets/rooms/web/', count: 4 },
+};
 
-        function tryNext() {
-            if (index > max) { resolve(found); return; }
-
-            const img = new Image();
-            img.onload = () => {
-                found.push({ src: `${base}${index}.webp`, alt: makeAlt(index) });
-                index++;
-                tryNext();
-            };
-            img.onerror = () => resolve(found); // first miss → stop
-            img.src = `${base}${index}.webp`;
-        }
-
-        tryNext();
-    });
+/**
+ * Builds an image list from the manifest — no network requests, no 404s.
+ * @param {string}   key     Key in IMAGE_MANIFEST
+ * @param {Function} makeAlt Function(index) → alt text string
+ * @returns {Array<{src: string, alt: string}>}
+ */
+function getImages(key, makeAlt = (i) => `Photo ${i}`) {
+    const { base, count } = IMAGE_MANIFEST[key];
+    return Array.from({ length: count }, (_, i) => ({
+        src: `${base}${i + 1}.webp`,
+        alt: makeAlt(i + 1),
+    }));
 }
 
 /* ==================== INTRO IMAGES ==================== */
-// Probe: assets/experience/  →  serves: 1.webp, 2.webp …
 function initIntroImages() {
     const container = document.getElementById('introImages');
     if (!container) return;
 
-    probeImages('assets/experience/', 20, i => `Coco Villa experience photo ${i}`).then(images => {
-        container.innerHTML = '';
-
-        if (images.length > 0) {
-            images.forEach(({ src, alt }, i) => {
-                const img = document.createElement('img');
-                img.src = src;
-                img.alt = alt;
-                img.loading = 'lazy';
-                img.className = 'intro-img' + (i % 2 === 0 ? ' intro-img--offset' : '');
-                container.appendChild(img);
-            });
-        } else {
-            // Fallback when no numbered webp files found
-            [
-                { src: 'assets/room_detail.jpg', alt: 'Coco Villa room interior', cls: 'intro-img intro-img--offset' },
-                { src: 'assets/beach.jpg', alt: 'Unawatuna beach near Coco Villa', cls: 'intro-img' },
-            ].forEach(({ src, alt, cls }) => {
-                const img = document.createElement('img');
-                img.src = src; img.alt = alt; img.loading = 'lazy'; img.className = cls;
-                container.appendChild(img);
-            });
-        }
+    const images = getImages('experience', i => `Coco Villa experience photo ${i}`);
+    container.innerHTML = '';
+    images.forEach(({ src, alt }, i) => {
+        const img = document.createElement('img');
+        img.src = src;
+        img.alt = alt;
+        img.loading = 'lazy';
+        img.className = 'intro-img' + (i % 2 === 0 ? ' intro-img--offset' : '');
+        container.appendChild(img);
     });
 }
 
 /* ==================== GALLERY (drag-scroll) ==================== */
-// Probe: assets/garden_layouts/web/  →  serves: 1.webp, 2.webp …
-function probeGardenImages() {
-    return probeImages(
-        'assets/garden_layouts/web/', 50,
-        i => `Coco Villa garden photo ${i}`
-    );
-}
-
 function buildGallery(items) {
     const track = document.getElementById('galleryTrack');
     if (!track) return;
@@ -179,18 +149,9 @@ function buildGallery(items) {
     attachGalleryDrag(track);
 }
 
-const GARDEN_FALLBACK = [
-    { src: 'assets/path.jpg', alt: 'Lush garden path through the coconut grove' },
-    { src: 'assets/coconut.png', alt: 'Coconut palm trees surrounding the villa' },
-    { src: 'assets/rain.jpg', alt: 'Tropical rain and lush greenery at the villa' },
-    { src: 'assets/fruit.jpeg', alt: 'Fresh tropical fruits from the garden' },
-    { src: 'assets/beach.jpg', alt: 'Pristine Unawatuna beach near Coco Villa' },
-];
-
 function initGallery() {
-    probeGardenImages().then(images => {
-        buildGallery(images.length > 0 ? images : GARDEN_FALLBACK);
-    });
+    const images = getImages('garden', i => `Coco Villa garden photo ${i}`);
+    buildGallery(images);
 }
 
 function attachGalleryDrag(track) {
@@ -229,15 +190,7 @@ function scrollGallery(direction) {
 }
 
 /* ==================== ROOM CAROUSEL ==================== */
-// Probe: assets/rooms/web/  →  serves: 1.webp, 2.webp …
 let currentSlide = 0, totalSlides = 0, carouselTimer = null;
-
-function probeRoomImages() {
-    return probeImages(
-        'assets/rooms/web/', 50,
-        i => `Coco Villa room photo ${i}`
-    );
-}
 
 function buildCarousel(images) {
     const slidesEl = document.getElementById('roomSlides');
@@ -278,16 +231,8 @@ function buildCarousel(images) {
 }
 
 function initRoomCarousel() {
-    probeRoomImages().then(images => {
-        if (images.length === 0) {
-            images = [
-                { src: 'assets/room_detail.jpg', alt: 'Coco Villa room interior' },
-                { src: 'assets/room_bed.jpg', alt: 'King bed in the villa room' },
-                { src: 'assets/room_kitchen.jpg', alt: 'Modern kitchen area' },
-            ];
-        }
-        buildCarousel(images);
-    });
+    const images = getImages('rooms', i => `Coco Villa room photo ${i}`);
+    buildCarousel(images);
 }
 
 function changeSlide(direction) {
