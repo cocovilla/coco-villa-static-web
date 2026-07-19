@@ -39,12 +39,21 @@ function initNavbar() {
     const sections = document.querySelectorAll('section[id]');
     const navLinks = document.querySelectorAll('.nav-link');
 
+    // Cache offsets once — never read offsetTop inside scroll handler (forced reflow)
+    let sectionOffsets = [];
+    const cacheSectionOffsets = () => {
+        sectionOffsets = Array.from(sections).map(s => ({
+            id: s.getAttribute('id'),
+            top: s.offsetTop,
+        }));
+    };
+    cacheSectionOffsets();
+    window.addEventListener('resize', cacheSectionOffsets, { passive: true });
+
     const highlightNav = () => {
         let current = '';
-        sections.forEach(section => {
-            if (window.scrollY >= section.offsetTop - 120) {
-                current = section.getAttribute('id');
-            }
+        sectionOffsets.forEach(({ id, top }) => {
+            if (window.scrollY >= top - 120) current = id;
         });
         navLinks.forEach(link => {
             const href = link.getAttribute('href');
@@ -300,10 +309,36 @@ document.addEventListener('keydown', e => {
 
 /* ==================== MAP INTERACTIONS ==================== */
 const VILLA_COORDS = '6.022760,80.246185';
+const DEFAULT_MAP_QUERY = `${VILLA_COORDS}&ll=6.028397,80.237084`;
 const BASE_MAP_SRC = query => `https://maps.google.com/maps?q=${encodeURIComponent(query)}&z=14&output=embed`;
 let mapResetTimer = null;
+let mapLoaded = false;
 
-function initMapInteractions() { /* driven by inline onmouseenter / onclick */ }
+/**
+ * Lazy-load the map iframe only when the location section scrolls into view.
+ * This prevents Google Maps from making any network requests on initial page load,
+ * removing it from the critical path and addressing the cache TTL warning.
+ */
+function initMapInteractions() {
+    const section = document.getElementById('location');
+    const frame = document.getElementById('mapFrame');
+    if (!section || !frame) return;
+
+    if ('IntersectionObserver' in window) {
+        const obs = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting && !mapLoaded) {
+                mapLoaded = true;
+                frame.src = BASE_MAP_SRC(DEFAULT_MAP_QUERY);
+                obs.disconnect();
+            }
+        }, { rootMargin: '200px' }); // start loading 200px before it enters view
+        obs.observe(section);
+    } else {
+        // Fallback: load immediately for browsers without IntersectionObserver
+        frame.src = BASE_MAP_SRC(DEFAULT_MAP_QUERY);
+        mapLoaded = true;
+    }
+}
 
 function updateMap(query) {
     const frame = document.getElementById('mapFrame');
@@ -311,11 +346,12 @@ function updateMap(query) {
     clearTimeout(mapResetTimer);
     frame.style.opacity = '0.5';
     frame.src = BASE_MAP_SRC(query);
+    mapLoaded = true;
     frame.addEventListener('load', () => { frame.style.opacity = '1'; }, { once: true });
 }
 
 function resetMap() {
-    mapResetTimer = setTimeout(() => updateMap(`${VILLA_COORDS}&ll=6.028397,80.237084`), 300);
+    mapResetTimer = setTimeout(() => updateMap(DEFAULT_MAP_QUERY), 300);
 }
 
 function showAttractions() {
