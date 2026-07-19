@@ -86,34 +86,31 @@ function closeMobileMenu() {
 
 /* ==================== IMAGE PROBING UTILITY ==================== */
 /**
- * Probes numbered .jpg files (1.jpg, 2.jpg, …) to detect which images exist,
- * then returns objects with the .webp path (same name, .webp extension).
+ * Probes numbered .webp files (1.webp, 2.webp, …) ALL IN PARALLEL using
+ * Promise.all so there is no sequential waterfall. Results are sorted by index.
  *
- * @param {string}  base     Folder path, e.g. 'assets/rooms/web/'
- * @param {number}  max      Safety cap (default 50)
- * @param {Function} makeAlt Function(index) → alt text string
+ * @param {string}   base     Folder path, e.g. 'assets/rooms/web/'
+ * @param {number}   max      Safety cap (default 50)
+ * @param {Function} makeAlt  Function(index) → alt text string
  * @returns {Promise<Array<{src: string, alt: string}>>}
  */
 function probeImages(base, max = 50, makeAlt = (i) => `Photo ${i}`) {
-    return new Promise(resolve => {
-        const found = [];
-        let index = 1;
-
-        function tryNext() {
-            if (index > max) { resolve(found); return; }
-
-            const probe = new Image();
-            probe.onload = () => {
-                found.push({ src: `${base}${index}.webp`, alt: makeAlt(index) });
-                index++;
-                tryNext();
-            };
-            probe.onerror = () => resolve(found);   // first miss → stop
-            probe.src = `${base}${index}.webp`;     // probe directly for .webp
-        }
-
-        tryNext();
+    const probes = Array.from({ length: max }, (_, i) => i + 1).map(index => {
+        const src = `${base}${index}.webp`;
+        return new Promise(resolve => {
+            const img = new Image();
+            img.onload = () => resolve({ index, src, alt: makeAlt(index) });
+            img.onerror = () => resolve(null);   // miss → null
+            img.src = src;
+        });
     });
+
+    return Promise.all(probes).then(results =>
+        results
+            .filter(Boolean)                       // drop misses
+            .sort((a, b) => a.index - b.index)     // restore order
+            .map(({ src, alt }) => ({ src, alt })) // strip internal index
+    );
 }
 
 /* ==================== INTRO IMAGES ==================== */
