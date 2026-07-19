@@ -126,13 +126,26 @@ function initIntroImages() {
 
     const images = getImages('experience', i => `Coco Villa experience photo ${i}`);
     container.innerHTML = '';
+
+    // 1. Render skeletons immediately
+    images.forEach((_, i) => {
+        const skel = document.createElement('div');
+        skel.className = 'intro-img skeleton' + (i % 2 === 0 ? ' intro-img--offset' : '');
+        container.appendChild(skel);
+    });
+
+    // 2. Load real images and swap skeletons
     images.forEach(({ src, alt }, i) => {
-        const img = document.createElement('img');
-        img.src = src;
-        img.alt = alt;
-        img.loading = 'lazy';
-        img.className = 'intro-img' + (i % 2 === 0 ? ' intro-img--offset' : '');
-        container.appendChild(img);
+        const loader = new Image();
+        loader.onload = () => {
+            const img = document.createElement('img');
+            img.src = src;
+            img.alt = alt;
+            img.loading = 'lazy';
+            img.className = 'intro-img' + (i % 2 === 0 ? ' intro-img--offset' : '');
+            container.children[i].replaceWith(img);
+        };
+        loader.src = src;
     });
 }
 
@@ -142,20 +155,32 @@ function buildGallery(items) {
     if (!track) return;
     track.innerHTML = '';
 
-    items.forEach(({ src, alt }) => {
-        const card = document.createElement('div');
-        card.className = 'gallery-card';
-        card.setAttribute('role', 'listitem');
-
-        const img = document.createElement('img');
-        img.src = src;
-        img.alt = alt;
-        img.loading = 'lazy';
-        card.appendChild(img);
-        track.appendChild(card);
+    // 1. Render skeleton cards at correct dimensions right away
+    items.forEach(() => {
+        const skel = document.createElement('div');
+        skel.className = 'gallery-card skeleton';
+        skel.setAttribute('role', 'listitem');
+        track.appendChild(skel);
     });
 
     attachGalleryDrag(track);
+
+    // 2. Load real images and swap each skeleton individually
+    items.forEach(({ src, alt }, i) => {
+        const loader = new Image();
+        loader.onload = () => {
+            const card = document.createElement('div');
+            card.className = 'gallery-card';
+            card.setAttribute('role', 'listitem');
+            const img = document.createElement('img');
+            img.src = src;
+            img.alt = alt;
+            img.loading = 'lazy';
+            card.appendChild(img);
+            track.children[i].replaceWith(card);
+        };
+        loader.src = src;
+    });
 }
 
 function initGallery() {
@@ -212,15 +237,9 @@ function buildCarousel(images) {
     dotsEl.innerHTML = '';
 
     images.forEach(({ src, alt }, i) => {
-        // Slide
+        // 1. Skeleton slide (first one is active so it's visible)
         const slide = document.createElement('div');
-        slide.className = 'room-slide' + (i === 0 ? ' active' : '');
-
-        const img = document.createElement('img');
-        img.src = src;
-        img.alt = alt;
-        img.loading = i === 0 ? 'eager' : 'lazy';
-        slide.appendChild(img);
+        slide.className = 'room-slide skeleton' + (i === 0 ? ' active' : '');
         slidesEl.appendChild(slide);
 
         // Dot
@@ -231,6 +250,18 @@ function buildCarousel(images) {
         dot.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
         dot.addEventListener('click', () => goToSlide(i));
         dotsEl.appendChild(dot);
+
+        // 2. Load real image then swap out skeleton
+        const loader = new Image();
+        loader.onload = () => {
+            const img = document.createElement('img');
+            img.src = src;
+            img.alt = alt;
+            img.loading = i === 0 ? 'eager' : 'lazy';
+            slide.classList.remove('skeleton');
+            slide.appendChild(img);
+        };
+        loader.src = src;
     });
 
     if (totalSlides > 1) {

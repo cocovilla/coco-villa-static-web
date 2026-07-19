@@ -716,7 +716,6 @@ ol {
     margin-bottom: 2rem;
     border-radius: var(--radius-lg);
     overflow: hidden;
-    group: true;
 }
 
 @media (min-width: 768px) {
@@ -1610,5 +1609,94 @@ ol {
 
     .location-details {
         padding: 2rem 1.5rem;
+    }
+}
+
+/* ==================== SKELETON LOADING ==================== */
+
+@keyframes skeleton-shimmer {
+    0% {
+        background-position: 200% center;
+    }
+
+    100% {
+        background-position: -200% center;
+    }
+}
+
+/* Base shimmer — applied to any .skeleton element */
+.skeleton {
+    background: linear-gradient(90deg,
+            #e8e6e0 25%,
+            #f0ede7 50%,
+            #e8e6e0 75%);
+    background-size: 200% 100%;
+    animation: skeleton-shimmer 1.6s ease-in-out infinite;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Subtle image-placeholder icon centred in every skeleton */
+.skeleton::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' fill='none'%3E%3Crect width='64' height='64' rx='4' fill='none'/%3E%3Cpath d='M8 44l14-18 10 13 7-9 17 14H8z' fill='%23c9cac2' opacity='.45'/%3E%3Ccircle cx='46' cy='18' r='6' fill='%23c9cac2' opacity='.45'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 48px 48px;
+    pointer-events: none;
+}
+
+/* Gallery card skeleton — keeps exact same dimensions as a real card */
+.gallery-card.skeleton {
+    flex: none;
+    width: min(16rem, 75vw);
+    aspect-ratio: 3 / 4;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+}
+
+@media (min-width: 640px) {
+    .gallery-card.skeleton {
+        width: 20rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .gallery-card.skeleton {
+        width: 24rem;
+    }
+}
+
+/* Room carousel slide skeleton */
+.room-slide.skeleton {
+    position: absolute;
+    inset: 0;
+    border-radius: 0;
+}
+
+/* Intro image skeleton — matches .intro-img sizing */
+.intro-img.skeleton {
+    border-radius: var(--radius-lg);
+    height: 17rem;
+    width: 100%;
+    display: block;
+}
+
+/* Fade-in when real image replaces skeleton */
+.gallery-card img,
+.room-slide img,
+.intro-img {
+    animation: img-fade-in 0.4s ease both;
+}
+
+@keyframes img-fade-in {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
     }
 }
