@@ -1706,15 +1706,17 @@ ol {
 /* ==================== RESPONSIVE TWEAKS ==================== */
 @media (max-width: 640px) {
     .intro-images {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.75rem;
+    }
+
+    .intro-img,
+    .intro-img.skeleton {
+        height: 14rem;
     }
 
     .intro-img--offset {
-        transform: none;
-    }
-
-    .intro-img:last-child {
-        display: none;
+        transform: translateY(1.5rem);
     }
 
     .booking-panel-inner {
