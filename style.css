@@ -336,12 +336,19 @@ ol {
 /* ==================== HERO ==================== */
 .hero {
     position: relative;
-    height: 100svh;
-    min-height: 600px;
+    height: 75svh;
+    min-height: 480px;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
+}
+
+@media (min-width: 768px) {
+    .hero {
+        height: 100svh;
+        min-height: 600px;
+    }
 }
 
 .hero-bg {
@@ -365,7 +372,7 @@ ol {
 .hero-overlay {
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0.32);
+    background: rgb(0 0 0 / 16%);
 }
 
 .hero-content {
