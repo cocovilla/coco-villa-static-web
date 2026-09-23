@@ -174,6 +174,7 @@ function initIntroImages() {
             img.alt = alt;
             img.loading = 'lazy';
             img.className = 'intro-img' + (i % 2 === 0 ? ' intro-img--offset' : '');
+            makeClickable(img, () => images, i);
             container.children[i].replaceWith(img);
         };
         loader.src = src;
@@ -203,11 +204,19 @@ function buildGallery(items) {
             const card = document.createElement('div');
             card.className = 'gallery-card';
             card.setAttribute('role', 'listitem');
+            card.style.cursor = 'zoom-in';
             const img = document.createElement('img');
             img.src = src;
             img.alt = alt;
             img.loading = 'lazy';
             card.appendChild(img);
+            // Wire lightbox on the card (img has pointer-events:none)
+            // Guard: only open if user barely moved (not a drag)
+            card.addEventListener('click', () => {
+                const dragged = track._getDragDistance ? track._getDragDistance() : 0;
+                if (dragged > 6) return;
+                openLightbox(items, i);
+            });
             track.children[i].replaceWith(card);
         };
         loader.src = src;
@@ -220,17 +229,19 @@ function initGallery() {
 }
 
 function attachGalleryDrag(track) {
-    let isDragging = false, startX = 0, scrollStart = 0;
+    let isDragging = false, startX = 0, scrollStart = 0, dragDistance = 0;
 
     track.addEventListener('mousedown', e => {
         isDragging = true;
         startX = e.pageX - track.offsetLeft;
         scrollStart = track.scrollLeft;
+        dragDistance = 0;
         track.classList.add('dragging');
         e.preventDefault();
     });
     document.addEventListener('mousemove', e => {
         if (!isDragging) return;
+        dragDistance = Math.abs(e.pageX - track.offsetLeft - startX);
         track.scrollLeft = scrollStart - (e.pageX - track.offsetLeft - startX) * 1.2;
     });
     document.addEventListener('mouseup', () => { isDragging = false; track.classList.remove('dragging'); });
@@ -244,6 +255,9 @@ function attachGalleryDrag(track) {
     track.addEventListener('touchmove', e => {
         track.scrollLeft = touchScrollStart - (e.touches[0].pageX - touchStartX);
     }, { passive: true });
+
+    // Expose drag distance so card click handlers can ignore drags
+    track._getDragDistance = () => dragDistance;
 }
 
 function scrollGallery(direction) {
@@ -291,6 +305,7 @@ function buildCarousel(images) {
             img.loading = i === 0 ? 'eager' : 'lazy';
             slide.classList.remove('skeleton');
             slide.appendChild(img);
+            makeClickable(img, () => images, i);
         };
         loader.src = src;
     });
@@ -393,9 +408,8 @@ document.addEventListener('keydown', e => {
 });
 
 /* ==================== MAP INTERACTIONS ==================== */
-const VILLA_COORDS = '6.022760,80.246185';
-const DEFAULT_MAP_QUERY = `${VILLA_COORDS}&ll=6.028397,80.237084`;
-const BASE_MAP_SRC = query => `https://maps.google.com/maps?q=${encodeURIComponent(query)}&z=14&output=embed`;
+const DEFAULT_MAP_QUERY = '6.023309370079393,80.24633217116363';
+const BASE_MAP_SRC = query => `https://maps.google.com/maps?q=${encodeURIComponent(query)}&z=17&output=embed`;
 let mapResetTimer = null;
 let mapLoaded = false;
 
@@ -471,3 +485,117 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         closeMobileMenu();
     });
 });
+
+/* ==================== LIGHTBOX ==================== */
+const lightboxState = {
+    images: [],   // { src, alt }
+    index: 0,
+};
+
+function openLightbox(imageList, startIndex) {
+    lightboxState.images = imageList;
+    lightboxState.index = startIndex;
+    _lightboxRender();
+
+    const lb = document.getElementById('lightbox');
+    lb.removeAttribute('aria-hidden');
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    document.getElementById('lightboxClose').focus();
+}
+
+function closeLightbox() {
+    const lb = document.getElementById('lightbox');
+    lb.classList.remove('open');
+    lb.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+}
+
+function _lightboxNav(delta) {
+    const n = lightboxState.images.length;
+    if (n <= 1) return;
+    lightboxState.index = (lightboxState.index + delta + n) % n;
+    _lightboxRender();
+}
+
+function _lightboxRender() {
+    const { images, index } = lightboxState;
+    const img = document.getElementById('lightboxImg');
+    const counter = document.getElementById('lightboxCounter');
+    const prevBtn = document.getElementById('lightboxPrev');
+    const nextBtn = document.getElementById('lightboxNext');
+
+    // Animate out → swap → animate in
+    img.style.opacity = '0';
+    img.style.transform = 'scale(0.92)';
+
+    // Short delay lets CSS transition reset before new src loads
+    setTimeout(() => {
+        const { src, alt } = images[index];
+        img.src = src;
+        img.alt = alt || '';
+
+        img.onload = () => {
+            img.style.opacity = '';
+            img.style.transform = '';
+        };
+        // If already cached, onload won't fire — force it
+        if (img.complete && img.naturalWidth) {
+            img.style.opacity = '';
+            img.style.transform = '';
+        }
+    }, 80);
+
+    // Counter
+    counter.textContent = images.length > 1 ? `${index + 1} / ${images.length}` : '';
+
+    // Hide arrows when only 1 image
+    const showArrows = images.length > 1;
+    prevBtn.style.display = showArrows ? '' : 'none';
+    nextBtn.style.display = showArrows ? '' : 'none';
+}
+
+// Wire up buttons
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+    document.getElementById('lightboxBackdrop').addEventListener('click', closeLightbox);
+    document.getElementById('lightboxPrev').addEventListener('click', () => _lightboxNav(-1));
+    document.getElementById('lightboxNext').addEventListener('click', () => _lightboxNav(1));
+});
+
+// Keyboard navigation
+document.addEventListener('keydown', e => {
+    const lb = document.getElementById('lightbox');
+    if (!lb || !lb.classList.contains('open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowRight') _lightboxNav(1);
+    if (e.key === 'ArrowLeft') _lightboxNav(-1);
+});
+
+// Touch / swipe support
+(function () {
+    let touchStartX = 0;
+    document.addEventListener('touchstart', e => {
+        const lb = document.getElementById('lightbox');
+        if (!lb || !lb.classList.contains('open')) return;
+        touchStartX = e.touches[0].clientX;
+    }, { passive: true });
+    document.addEventListener('touchend', e => {
+        const lb = document.getElementById('lightbox');
+        if (!lb || !lb.classList.contains('open')) return;
+        const delta = touchStartX - e.changedTouches[0].clientX;
+        if (Math.abs(delta) > 44) _lightboxNav(delta > 0 ? 1 : -1);
+    }, { passive: true });
+})();
+
+/* ------ Helpers to register images with the lightbox ------ */
+/**
+ * makeClickable(el, imageList, index)
+ * Wraps el to open the lightbox when clicked.
+ */
+function makeClickable(el, getImages, index) {
+    el.style.cursor = 'zoom-in';
+    el.addEventListener('click', () => {
+        openLightbox(getImages(), index);
+    });
+}
