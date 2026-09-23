@@ -223,6 +223,7 @@ function buildGallery(items) {
     });
 }
 
+
 function initGallery() {
     const images = getImages('garden', i => `Coco Villa garden photo ${i}`);
     buildGallery(images);
@@ -408,7 +409,7 @@ document.addEventListener('keydown', e => {
 });
 
 /* ==================== MAP INTERACTIONS ==================== */
-const DEFAULT_MAP_QUERY = '6.023309370079393,80.24633217116363';
+const DEFAULT_MAP_QUERY = '6.0231583168159055,80.24683406347937';
 const BASE_MAP_SRC = query => `https://maps.google.com/maps?q=${encodeURIComponent(query)}&z=17&output=embed`;
 let mapResetTimer = null;
 let mapLoaded = false;
