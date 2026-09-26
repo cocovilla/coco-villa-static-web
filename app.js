@@ -393,11 +393,19 @@ function closeBookingModal() {
 }
 
 document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') closeBookingModal();
+    if (e.key === 'Escape') {
+        const airbnb = document.getElementById('airbnbModal');
+        if (airbnb && airbnb.classList.contains('open')) { closeAirbnbModal(); return; }
+        closeBookingModal();
+    }
 });
 
 document.addEventListener('keydown', e => {
-    const modal = document.getElementById('bookingModal');
+    // Trap focus inside whichever modal is open
+    const airbnb = document.getElementById('airbnbModal');
+    const booking = document.getElementById('bookingModal');
+    const modal = (airbnb && airbnb.classList.contains('open')) ? airbnb : booking;
+
     if (!modal || !modal.classList.contains('open') || e.key !== 'Tab') return;
     const focusables = Array.from(
         modal.querySelectorAll('button, a, input, select, textarea, [tabindex]:not([tabindex="-1"])')
@@ -407,6 +415,28 @@ document.addEventListener('keydown', e => {
     if (e.shiftKey) { if (document.activeElement === first) { last.focus(); e.preventDefault(); } }
     else { if (document.activeElement === last) { first.focus(); e.preventDefault(); } }
 });
+
+/* ==================== AIRBNB MODAL ==================== */
+function openAirbnbModal() {
+    closeBookingModal(); // Hide primary modal if it was open
+    const modal = document.getElementById('airbnbModal');
+    if (!modal) return;
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => {
+        const first = modal.querySelector('.modal-close, .booking-option');
+        if (first) first.focus();
+    }, 100);
+}
+
+function closeAirbnbModal() {
+    const modal = document.getElementById('airbnbModal');
+    if (!modal) return;
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+}
 
 /* ==================== MAP INTERACTIONS ==================== */
 const DEFAULT_MAP_QUERY = '6.0231583168159055,80.24683406347937';

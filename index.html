@@ -342,8 +342,8 @@
                                         <span class="platform-icon booking-icon" aria-hidden="true">B.</span>
                                         <span>Booking.com</span>
                                     </a>
-                                    <a href="https://www.airbnb.com" target="_blank" rel="noopener noreferrer"
-                                        class="platform-badge" role="listitem" aria-label="Book on Airbnb">
+                                    <a href="#" onclick="openAirbnbModal(); return false;" class="platform-badge"
+                                        role="listitem" aria-label="Book on Airbnb">
                                         <svg class="platform-icon airbnb-icon" viewBox="0 0 24 24" aria-hidden="true"
                                             fill="currentColor">
                                             <path
@@ -482,7 +482,7 @@
                         <h4 class="footer-col-heading">Book</h4>
                         <a href="https://www.booking.com/hotel/lk/coco-villa-unawatuna.html" target="_blank"
                             rel="noopener noreferrer">Booking.com</a>
-                        <a href="https://www.airbnb.com" target="_blank" rel="noopener noreferrer">Airbnb</a>
+                        <a href="#" onclick="openAirbnbModal(); return false;">Airbnb</a>
                         <a href="https://wa.me/94712566198" target="_blank" rel="noopener noreferrer">WhatsApp</a>
                     </div>
                     <div class="footer-col">
@@ -544,8 +544,7 @@
                 </a>
 
                 <!-- Airbnb -->
-                <a href="https://www.airbnb.com" target="_blank" rel="noopener noreferrer" class="booking-option"
-                    role="listitem">
+                <a href="#" class="booking-option" onclick="openAirbnbModal(); return false;" role="listitem">
                     <div class="booking-option-icon airbnb-modal-icon" aria-hidden="true">
                         <svg viewBox="0 0 122.88 122.88" width="44" height="44" aria-hidden="true" fill="#FF5A5F">
                             <path
@@ -598,6 +597,98 @@
                 </svg>
                 Best rates are guaranteed when booking directly via WhatsApp.
             </p>
+        </div>
+    </div>
+
+    <!-- ===================== AIRBNB SELECTOR MODAL ===================== -->
+    <div id="airbnbModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="airbnbModalTitle"
+        aria-hidden="true">
+        <div class="modal-backdrop" onclick="closeAirbnbModal()"></div>
+        <div class="modal-card" role="document">
+            <div class="modal-header">
+                <div>
+                    <h2 class="modal-title" id="airbnbModalTitle">Which space fits you best?</h2>
+                    <p class="modal-subtitle">We have 3 unique Airbnb listings for you.</p>
+                </div>
+                <button class="modal-close" onclick="closeAirbnbModal()" aria-label="Close Airbnb selector">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="modal-options" role="list">
+                <!-- Room 1 -->
+                <a href="https://www.airbnb.com.sg/rooms/1770111723531097678" target="_blank" rel="noopener noreferrer"
+                    class="booking-option" role="listitem">
+                    <div class="booking-option-icon" aria-hidden="true" style="color:var(--green)">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M2 20h20"></path>
+                            <path d="M5 20V8a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v12"></path>
+                            <path d="M13 20V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v16"></path>
+                        </svg>
+                    </div>
+                    <div class="booking-option-text">
+                        <span class="booking-option-title">Deluxe Garden Room 1</span>
+                        <span class="booking-option-sub">Perfect for couples · King bed</span>
+                    </div>
+                    <div class="booking-option-arrow" aria-hidden="true">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </div>
+                </a>
+
+                <!-- Room 2 -->
+                <a href="https://www.airbnb.com.sg/rooms/1770132901600593661" target="_blank" rel="noopener noreferrer"
+                    class="booking-option" role="listitem">
+                    <div class="booking-option-icon" aria-hidden="true" style="color:var(--green)">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M2 20h20"></path>
+                            <path d="M5 20V8a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v12"></path>
+                            <path d="M13 20V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v16"></path>
+                        </svg>
+                    </div>
+                    <div class="booking-option-text">
+                        <span class="booking-option-title">Deluxe Garden Room 2</span>
+                        <span class="booking-option-sub">Private patio view · King bed</span>
+                    </div>
+                    <div class="booking-option-arrow" aria-hidden="true">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </div>
+                </a>
+
+                <!-- Entire Villa -->
+                <a href="https://www.airbnb.com.sg/rooms/1766428120639266215" target="_blank" rel="noopener noreferrer"
+                    class="booking-option" role="listitem">
+                    <div class="booking-option-icon" aria-hidden="true" style="color:var(--green)">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                    </div>
+                    <div class="booking-option-text">
+                        <span class="booking-option-title">Entire Coco Villa</span>
+                        <span class="booking-option-sub">Exclusive use · 2 Rooms · Full Kitchen</span>
+                    </div>
+                    <div class="booking-option-arrow" aria-hidden="true">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </div>
+                </a>
+            </div>
+            <p class="modal-note">Links open securely on Airbnb's official website.</p>
         </div>
     </div>
 
