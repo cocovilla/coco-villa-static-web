@@ -336,8 +336,8 @@ ol {
 /* ==================== HERO ==================== */
 .hero {
     position: relative;
-    height: 75svh;
-    min-height: 480px;
+    height: 55svh;
+    min-height: 380px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -346,7 +346,7 @@ ol {
 
 @media (min-width: 768px) {
     .hero {
-        height: 100svh;
+        height: 63svh;
         min-height: 600px;
     }
 }

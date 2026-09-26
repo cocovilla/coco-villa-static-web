@@ -103,7 +103,7 @@ function closeMobileMenu() {
  */
 const IMAGE_MANIFEST = {
     experience: { base: 'assets/experience/', count: 2 },
-    garden: { base: 'assets/garden_layouts/web/', count: 5 },
+    garden: { base: 'assets/garden_layouts/web/', count: 9 },
     rooms: { base: 'assets/rooms/web/', count: 11 },
 };
 
