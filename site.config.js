@@ -63,8 +63,8 @@ const SITE_CONFIG = {
      * WhatsApp Contact Number
      * -----------------------
      * International format without the leading '+'.
-     * Example: '94712566198' for +94 712 566 198
+     * Example: '94760687716' for +94 712 566 198
      */
-    whatsappNumber: '94712566198',
+    whatsappNumber: '94760687716',
 
 };
